@@ -1,95 +1,115 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { Box } from "@mui/material";
+import categoryStyles from "./homeStyles";
 
 export default function Home() {
+  const firstRowCategories = [
+    {
+      id: "1",
+      title: "Shirts",
+      backgroundImage: "url('https://placehold.co/600x400')",
+    },
+    {
+      id: "2",
+      title: "Oversize",
+      backgroundImage: "url('https://placehold.co/600x400')",
+    },
+    {
+      id: "3",
+      title: "Accessories",
+      backgroundImage: "url('https://placehold.co/600x400')",
+    },
+  ];
+
+  const secondRowCategories = [
+    {
+      id: "4",
+      title: "Women",
+      backgroundImage: "url('https://placehold.co/600x400')",
+    },
+    {
+      id: "5",
+      title: "Men",
+      backgroundImage: "url('https://placehold.co/600x400')",
+    },
+  ];
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+      {/* First Row - 3 Columns on larger screens, 1 column on mobile */}
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: { xs: "center", sm: "space-between" },
+          flexDirection: { xs: "column", sm: "row" },
+        }}
+      >
+        {firstRowCategories.map((category) => (
+          <Box
+            key={category.id}
+            sx={{
+              ...categoryStyles.categoryContainer,
+              flexBasis: { xs: "100%", sm: "30%" },
+              flexShrink: 0,
+              marginBottom: { xs: "15px", sm: "0" },
+              minHeight: "240px", // Ensure minimum height for visibility
+            }}
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+            <Box
+              className="backgroundImage"
+              sx={{
+                ...categoryStyles.backgroundImage,
+                backgroundImage: category.backgroundImage,
+              }}
             />
-          </a>
-        </div>
-      </div>
+            <Box
+              className="categoryBodyContainer"
+              sx={categoryStyles.categoryBodyContainer}
+            >
+              <h2>{category.title}</h2>
+              <p>Shop Now</p>
+            </Box>
+          </Box>
+        ))}
+      </Box>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      {/* Second Row - 2 Columns on larger screens, 1 column on mobile */}
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: { xs: "center", sm: "space-between" },
+          flexDirection: { xs: "column", sm: "row" },
+        }}
+      >
+        {secondRowCategories.map((category) => (
+          <Box
+            key={category.id}
+            sx={{
+              ...categoryStyles.categoryContainer,
+              flexBasis: { xs: "100%", sm: "45%" },
+              flexShrink: 0,
+              marginBottom: { xs: "15px", sm: "0" },
+              minHeight: "240px", // Ensure minimum height for visibility
+            }}
+          >
+            <Box
+              className="backgroundImage"
+              sx={{
+                ...categoryStyles.backgroundImage,
+                backgroundImage: category.backgroundImage,
+              }}
+            />
+            <Box
+              className="categoryBodyContainer"
+              sx={categoryStyles.categoryBodyContainer}
+            >
+              <h2>{category.title}</h2>
+              <p>Shop Now</p>
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    </Box>
   );
 }
