@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import categoryStyles from "./homeStyles";
+import CategoryItem from "./components/category-item/category-item.component"; 
 
 export default function Home() {
   const firstRowCategories = [
@@ -44,32 +44,13 @@ export default function Home() {
           flexDirection: { xs: "column", sm: "row" },
         }}
       >
-        {firstRowCategories.map((category) => (
-          <Box
-            key={category.id}
-            sx={{
-              ...categoryStyles.categoryContainer,
-              flexBasis: { xs: "100%", sm: "30%" },
-              flexShrink: 0,
-              marginBottom: { xs: "15px", sm: "0" },
-              minHeight: "240px", // Ensure minimum height for visibility
-            }}
-          >
-            <Box
-              className="backgroundImage"
-              sx={{
-                ...categoryStyles.backgroundImage,
-                backgroundImage: category.backgroundImage,
-              }}
-            />
-            <Box
-              className="categoryBodyContainer"
-              sx={categoryStyles.categoryBodyContainer}
-            >
-              <h2>{category.title}</h2>
-              <p>Shop Now</p>
-            </Box>
-          </Box>
+        {firstRowCategories.map(({ id, title, backgroundImage }) => (
+          <CategoryItem
+            key={id}
+            title={title}
+            backgroundImage={backgroundImage}
+            flexBasis={{ xs: "100%", sm: "30%" }}
+          />
         ))}
       </Box>
 
@@ -82,32 +63,13 @@ export default function Home() {
           flexDirection: { xs: "column", sm: "row" },
         }}
       >
-        {secondRowCategories.map((category) => (
-          <Box
-            key={category.id}
-            sx={{
-              ...categoryStyles.categoryContainer,
-              flexBasis: { xs: "100%", sm: "45%" },
-              flexShrink: 0,
-              marginBottom: { xs: "15px", sm: "0" },
-              minHeight: "240px", // Ensure minimum height for visibility
-            }}
-          >
-            <Box
-              className="backgroundImage"
-              sx={{
-                ...categoryStyles.backgroundImage,
-                backgroundImage: category.backgroundImage,
-              }}
-            />
-            <Box
-              className="categoryBodyContainer"
-              sx={categoryStyles.categoryBodyContainer}
-            >
-              <h2>{category.title}</h2>
-              <p>Shop Now</p>
-            </Box>
-          </Box>
+        {secondRowCategories.map(({ id, title, backgroundImage }) => (
+          <CategoryItem
+            key={id}
+            title={title}
+            backgroundImage={backgroundImage}
+            flexBasis={{ xs: "100%", sm: "45%" }}
+          />
         ))}
       </Box>
     </Box>
