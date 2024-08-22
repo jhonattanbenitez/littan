@@ -7,7 +7,7 @@ const categoryStyles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    border: "1px solid black",
+    border: "1px solid #103F89",
     margin: "0 7.5px 15px",
     overflow: "hidden",
     position: "relative",
@@ -43,6 +43,7 @@ const categoryStyles = {
     height: "100%",
     backgroundSize: "cover",
     backgroundPosition: "center",
+    backgroundColor: "#456FA5",
   },
 
   categoryBodyContainer: {
@@ -52,10 +53,11 @@ const categoryStyles = {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    border: "1px solid black",
+    border: "1px solid #103F89",
     backgroundColor: "white",
     opacity: 0.7,
     position: "absolute",
+    borderRadius: "5px",
 
     h2: {
       fontWeight: "bold",

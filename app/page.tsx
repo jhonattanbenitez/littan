@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
-import CategoryItem from "./components/category-item/category-item.component"; 
+import Categories from "./components/Categories/Categories"; 
+import Navigation from "./components/Navigation/Navigation"; 
 
 export default function Home() {
   const firstRowCategories = [
@@ -7,16 +8,22 @@ export default function Home() {
       id: "1",
       title: "Shirts",
       backgroundImage: "url('https://placehold.co/600x400')",
+      flexBasis: { xs: "100%", sm: "30%" },
+      linkUrl: "/shirts",
     },
     {
       id: "2",
       title: "Oversize",
       backgroundImage: "url('https://placehold.co/600x400')",
+      flexBasis: { xs: "100%", sm: "30%" },
+      linkUrl: "/oversize",
     },
     {
       id: "3",
       title: "Accessories",
       backgroundImage: "url('https://placehold.co/600x400')",
+      flexBasis: { xs: "100%", sm: "30%" },
+      linkUrl: "/accessories",
     },
   ];
 
@@ -25,52 +32,32 @@ export default function Home() {
       id: "4",
       title: "Women",
       backgroundImage: "url('https://placehold.co/600x400')",
+      flexBasis: { xs: "100%", sm: "45%" },
+      linkUrl: "/women",
     },
     {
       id: "5",
       title: "Men",
       backgroundImage: "url('https://placehold.co/600x400')",
+      flexBasis: { xs: "100%", sm: "45%" },
+      linkUrl: "/men",
     },
   ];
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-      {/* First Row - 3 Columns on larger screens, 1 column on mobile */}
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: { xs: "center", sm: "space-between" },
-          flexDirection: { xs: "column", sm: "row" },
-        }}
-      >
-        {firstRowCategories.map(({ id, title, backgroundImage }) => (
-          <CategoryItem
-            key={id}
-            title={title}
-            backgroundImage={backgroundImage}
-            flexBasis={{ xs: "100%", sm: "30%" }}
-          />
-        ))}
-      </Box>
+    <Box>
+      {/* Navigation Component */}
+      <Navigation />
 
-      {/* Second Row - 2 Columns on larger screens, 1 column on mobile */}
+      {/* Main Content */}
       <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: { xs: "center", sm: "space-between" },
-          flexDirection: { xs: "column", sm: "row" },
-        }}
+        sx={{ display: "flex", flexDirection: "column", gap: "15px", mt: 2 }}
       >
-        {secondRowCategories.map(({ id, title, backgroundImage }) => (
-          <CategoryItem
-            key={id}
-            title={title}
-            backgroundImage={backgroundImage}
-            flexBasis={{ xs: "100%", sm: "45%" }}
-          />
-        ))}
+        {/* First Row Categories */}
+        <Categories categories={firstRowCategories} />
+
+        {/* Second Row Categories */}
+        <Categories categories={secondRowCategories} />
       </Box>
     </Box>
   );
