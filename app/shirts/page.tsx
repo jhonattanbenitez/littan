@@ -3,7 +3,7 @@ import React from 'react'
 
 const shirts = () => {
   return (
-    <Box>
+    <Box sx={{mt: 10}}>
       <Typography>Shirts</Typography>
     </Box>
   )

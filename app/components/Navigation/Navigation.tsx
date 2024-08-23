@@ -12,7 +12,7 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag"; // MUI icon for b
 
 const Navigation: React.FC = () => {
   return (
-    <AppBar position="static" color="default" sx={{ boxShadow: "none" }}>
+    <AppBar position="fixed" color="default" sx={{ boxShadow: "none", mb: 10, }}>
       <Toolbar
         sx={{
           display: "flex",

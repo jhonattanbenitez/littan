@@ -46,12 +46,9 @@ export default function Home() {
 
   return (
     <Box>
-      {/* Navigation Component */}
-      <Navigation />
-
       {/* Main Content */}
       <Box
-        sx={{ display: "flex", flexDirection: "column", gap: "15px", mt: 2 }}
+        sx={{ display: "flex", flexDirection: "column", gap: "15px", mt: 10 }}
       >
         {/* First Row Categories */}
         <Categories categories={firstRowCategories} />

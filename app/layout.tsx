@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+import Navigation from "./components/Navigation/Navigation"; 
+import type { Metadata } from "next"; 
 import { Inter, Montserrat } from "next/font/google";
-
 
 const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({
@@ -22,7 +22,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} ${montserrat.className}`}>
-        {children}
+        <Navigation />
+        <main>{children}</main>
       </body>
     </html>
   );
