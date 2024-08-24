@@ -5,6 +5,7 @@ import {
   createUserDocumentFromAuth,
 } from "../utils/firebase/firebase.utils";
 import React from 'react'
+import SignUpForm from '../components/SignUpForm/SignUpForm';
 
 const SignIn = () => {
   const logGoogleUser = async () => { 
@@ -14,6 +15,7 @@ const SignIn = () => {
   return (
     <Box sx={{mt: 10}}>      
         <Button onClick={logGoogleUser}>Sign In With Google</Button>
+        <SignUpForm />
     </Box>
   )
 }
