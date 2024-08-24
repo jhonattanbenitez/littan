@@ -1,8 +1,10 @@
-import { Box, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { createAuthUserWithEmailAndPassword } from "@/app/utils/firebase/firebase.utils";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { FirebaseError } from "firebase/app";
+import FormInput from "../FormInput/FormInput"; 
+import CustomButton from "../CustomButton/CustomButton";
 
 const defaultFormState = {
   name: "",
@@ -67,55 +69,55 @@ const SignUpForm = () => {
   };
 
   return (
-    <Box>
-      <h1>Sign up with your email and password</h1>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
+      maxWidth: 400,
+      mt: 4
+    }}>
+      <Typography component={'h2'} sx={{margin: '10px 0'}}>Don&apos;t have an account?</Typography>
+      <Box component={'span'} sx={{fontSize: 16}}>Sign up with your email and password</Box>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Display name</label>
-        <input
+        <FormInput
           id="name"
+          label="Display name"
           type="text"
-          required
-          onChange={handleChange}
           name="name"
           value={name}
-        />
-        <label htmlFor="email">Email</label>
-        <input
+          onChange={handleChange}
           required
-          type="email"
+        />
+        <FormInput
           id="email"
+          label="Email"
+          type="email"
           name="email"
-          onChange={handleChange}
           value={email}
-        />
-        <label htmlFor="password">Password</label>
-        <input
+          onChange={handleChange}
           required
-          type="password"
+        />
+        <FormInput
           id="password"
-          name="password"
-          onChange={handleChange}
-          value={password}
-        />
-        <label htmlFor="confirmPassword">Confirm password</label>
-        <input
-          required
+          label="Password"
           type="password"
-          id="confirmPassword"
-          name="confirmPassword"
+          name="password"
+          value={password}
           onChange={handleChange}
-          value={confirmPassword}
+          required
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{ mt: 2 }}
-        >
-          Sign Up
-        </Button>
+        <FormInput
+          id="confirmPassword"
+          label="Confirm Password"
+          type="password"
+          name="confirmPassword"
+          value={confirmPassword}
+          onChange={handleChange}
+          required
+        />
+  
+        <CustomButton type="submit" buttonType="default" sx={{ mt: 2 }}>Sign Up</CustomButton>
       </form>
-
       {/* Display error messages */}
       <ErrorMessage message={errorMessage} />
     </Box>

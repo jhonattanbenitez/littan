@@ -1,17 +1,34 @@
-import { Typography } from "@mui/material";
-import React from "react";
+import { Snackbar, Alert } from "@mui/material";
+import React, { useState, useEffect } from "react";
 
 interface ErrorMessageProps {
   message: string | null;
 }
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => {
-  if (!message) return null;
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (message) {
+      setOpen(true);
+    }
+  }, [message]);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <Typography color="error" variant="body2" sx={{ mt: 2 }}>
-      {message}
-    </Typography>
+    <Snackbar
+      open={open}
+      autoHideDuration={6000}
+      onClose={handleClose}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+    >
+      <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+        {message}
+      </Alert>
+    </Snackbar>
   );
 };
 
