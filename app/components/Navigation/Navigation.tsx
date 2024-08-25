@@ -47,7 +47,7 @@ const Navigation: React.FC = () => {
           </Link>
 
           {/* Sign In Button */}
-          <Link href="/signin" passHref>
+          <Link href="/auth" passHref>
             <Button sx={{ textTransform: "none" }}>Sign In</Button>
           </Link>
 
