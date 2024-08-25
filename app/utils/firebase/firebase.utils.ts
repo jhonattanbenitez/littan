@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   UserCredential,
   User,
+  signInWithEmailAndPassword
 } from "firebase/auth";
 import {
   getFirestore,
@@ -104,3 +105,21 @@ export const createAuthUserWithEmailAndPassword = async (
     throw error;
   }
 };
+
+// Sign in with email and password
+export const signInWithEmailAndPasswordHandler = async (
+  email: string,
+  password: string
+): Promise<UserCredential | void> => {
+  if (!email || !password) return;
+
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential;
+  } catch (error) {
+    console.log("Error signing in", (error as Error).message);
+    // Re-throw the error so it can be caught in the calling function
+    throw error;
+  }
+};
+

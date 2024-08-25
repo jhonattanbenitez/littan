@@ -51,13 +51,8 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   return (
     <Button
       sx={{
-        minWidth: 160,
-        width: "auto",
+        width: "100%",
         height: 50,
-        letterSpacing: 0.5,
-        fontSize: 15,
-        fontWeight: "bolder",
-        lineHeight: 50,
         ...getButtonStyles(),
         ...sx,
       }} // Apply button styles and merge with additional sx

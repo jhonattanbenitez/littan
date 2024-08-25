@@ -1,23 +1,28 @@
-"use client"
-import { Box, Button } from '@mui/material'
-import {
-  signInWithGooglePopup,
-  createUserDocumentFromAuth,
-} from "../utils/firebase/firebase.utils";
-import React from 'react'
-import SignUpForm from '../components/SignUpForm/SignUpForm';
+"use client";
+import { Box, Grid } from "@mui/material";
+import React from "react";
+import SignUpForm from "../components/SignUpForm/SignUpForm";
+import SignInForm from "../components/SignInForm/SignInForm";
 
-const SignIn = () => {
-  const logGoogleUser = async () => { 
-    const {user} = await signInWithGooglePopup()
-    const userDocRef = await createUserDocumentFromAuth(user);
-  }
+const Authentication = () => {
   return (
-    <Box sx={{mt: 10}}>      
-        <Button onClick={logGoogleUser}>Sign In With Google</Button>
-        <SignUpForm />
+    <Box
+      sx={{
+        width: { xs: "100%", md: "800px" }, 
+        margin: "0 auto",
+        mt: 10,
+      }}
+    >
+      <Grid container spacing={2} justifyContent="center">
+        <Grid item xs={12} md={6}>
+          <SignInForm />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <SignUpForm />
+        </Grid>
+      </Grid>
     </Box>
-  )
-}
+  );
+};
 
-export default SignIn
+export default Authentication;

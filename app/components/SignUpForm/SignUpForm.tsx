@@ -72,11 +72,9 @@ const SignUpForm = () => {
     <Box sx={{
       display: 'flex',
       flexDirection: 'column',
-      width: '100%',
-      maxWidth: 400,
       mt: 4
     }}>
-      <Typography component={'h2'} sx={{margin: '10px 0'}}>Don&apos;t have an account?</Typography>
+      <Typography component={'h2'} sx={{margin: '10px 0', fontSize: 18, fontWeight: 'bold' }}>Don&apos;t have an account?</Typography>
       <Box component={'span'} sx={{fontSize: 16}}>Sign up with your email and password</Box>
       <form onSubmit={handleSubmit}>
         <FormInput
