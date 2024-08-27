@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import {
   AppBar,
@@ -8,15 +9,33 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag"; // MUI icon for bag
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import { useDispatch, useSelector } from "react-redux";
+import { signOut } from "firebase/auth"; 
+import { signOutSuccess } from "@/app/redux/userSlice";
+import { RootState } from "../../redux/store"; 
+import { auth } from "@/app/utils/firebase/firebase.utils";
 
 const Navigation: React.FC = () => {
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  console.log(currentUser)
+  const dispatch = useDispatch();
+
+ const handleSignOut = async () => {
+    try {
+      await signOut(auth); // Sign out using Firebase Auth
+      dispatch(signOutSuccess()); // Dispatch Redux action to clear user state
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
+  }
+
   return (
-    <AppBar position="fixed" color="default" sx={{ boxShadow: "none", mb: 10, }}>
+    <AppBar position="fixed" color="default" sx={{ boxShadow: "none", mb: 10 }}>
       <Toolbar
         sx={{
           display: "flex",
-          justifyContent: "space-between", // Space out the logo and menu
+          justifyContent: "space-between",
           alignItems: "center",
         }}
       >
@@ -36,22 +55,24 @@ const Navigation: React.FC = () => {
           </Link>
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          {/* Shop Button */}
           <Link href="/shop" passHref>
             <Button sx={{ textTransform: "none" }}>Shop</Button>
           </Link>
 
-          {/* Contact Button */}
           <Link href="/contact" passHref>
             <Button sx={{ textTransform: "none" }}>Contact</Button>
           </Link>
 
-          {/* Sign In Button */}
-          <Link href="/auth" passHref>
-            <Button sx={{ textTransform: "none" }}>Sign In</Button>
-          </Link>
+          {currentUser ? (
+            <Button onClick={handleSignOut} sx={{ textTransform: "none" }}>
+              Sign Out
+            </Button>
+          ) : (
+            <Link href="/auth" passHref>
+              <Button sx={{ textTransform: "none" }}>Sign In</Button>
+            </Link>
+          )}
 
-          {/* Bag Icon */}
           <IconButton color="inherit">
             <ShoppingBagIcon />
           </IconButton>

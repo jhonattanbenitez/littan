@@ -6,7 +6,10 @@ import {
   createUserWithEmailAndPassword,
   UserCredential,
   User,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  onAuthStateChanged, // Import onAuthStateChanged
+  setPersistence,
+  browserLocalPersistence,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -34,6 +37,16 @@ const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: "select_account" });
 
 export const auth = getAuth();
+
+// Ensure that Firebase Auth persists the session across page reloads and tabs
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    console.log("Persistence set to browserLocalPersistence");
+  })
+  .catch((error) => {
+    console.error("Failed to set persistence:", error);
+  });
+
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const db = getFirestore();
@@ -50,7 +63,7 @@ interface AdditionalInformation {
 // Create a user document from auth with optional additional information
 export const createUserDocumentFromAuth = async (
   userAuth: UserAuth | null,
-  additionalInformation: AdditionalInformation = {} // Defaults to an empty object
+  additionalInformation: AdditionalInformation = {}
 ): Promise<DocumentReference | void> => {
   if (!userAuth) return;
 
@@ -58,7 +71,6 @@ export const createUserDocumentFromAuth = async (
   const userSnapshot = await getDoc(userDocRef);
 
   if (!userSnapshot.exists()) {
-    // Use displayName from userAuth if available, else fallback to additionalInformation
     const displayName =
       userAuth.displayName ?? additionalInformation.displayName;
     const { email } = userAuth;
@@ -69,7 +81,7 @@ export const createUserDocumentFromAuth = async (
         displayName,
         email,
         createdAt,
-        ...additionalInformation, // Merge any additional information, though in this case it's only displayName
+        ...additionalInformation,
       });
     } catch (error) {
       console.log("Error creating user", (error as Error).message);
@@ -101,7 +113,6 @@ export const createAuthUserWithEmailAndPassword = async (
     return userCredential;
   } catch (error) {
     console.log("Error creating user", (error as Error).message);
-    // Re-throw the error so it can be caught in the calling function
     throw error;
   }
 };
@@ -114,12 +125,21 @@ export const signInWithEmailAndPasswordHandler = async (
   if (!email || !password) return;
 
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     return userCredential;
   } catch (error) {
     console.log("Error signing in", (error as Error).message);
-    // Re-throw the error so it can be caught in the calling function
     throw error;
   }
 };
 
+// Listen for auth state changes and run a callback when the user signs in or out
+export const onAuthStateChangeListener = (
+  callback: (user: User | null) => void
+) => {
+  onAuthStateChanged(auth, callback);
+};

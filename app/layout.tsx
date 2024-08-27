@@ -1,5 +1,5 @@
-import Navigation from "./components/Navigation/Navigation"; 
-import type { Metadata } from "next"; 
+import type { Metadata } from "next";
+import ClientLayout from "./ClientLayout";
 import { Inter, Montserrat } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,8 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} ${montserrat.className}`}>
-        <Navigation />
-        <main>{children}</main>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
