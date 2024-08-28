@@ -18,7 +18,7 @@ import { auth } from "@/app/utils/firebase/firebase.utils";
 
 const Navigation: React.FC = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
-  console.log(currentUser)
+
   const dispatch = useDispatch();
 
  const handleSignOut = async () => {

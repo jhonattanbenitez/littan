@@ -1,5 +1,6 @@
 "use client"
 import { createContext, useState, ReactNode, useMemo } from "react";
+import { signOutSuccess } from "../redux/userSlice";
 
 interface UserContextType {
   currentUser: any;
@@ -16,8 +17,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     () => ({ currentUser, setCurrentUser }),
     [currentUser, setCurrentUser]
   );
-
-  console.log("UserProvider initialized with value:", value);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
