@@ -1,4 +1,4 @@
-"use client"; // Required for client-side logic
+"use client";
 
 import Navigation from "./components/Navigation/Navigation";
 import { Provider } from "react-redux";
@@ -8,7 +8,7 @@ import AuthWrapper from "./AuthWrapper";
 export default function ClientLayout({
   children,
 }: {
-  children: React.ReactNode;
+  readonly children: React.ReactNode;
 }) {
   return (
     <Provider store={store}>

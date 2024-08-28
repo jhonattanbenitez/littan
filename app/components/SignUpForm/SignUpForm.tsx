@@ -5,6 +5,8 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { FirebaseError } from "firebase/app";
 import FormInput from "../FormInput/FormInput"; 
 import CustomButton from "../CustomButton/CustomButton";
+import { useDispatch } from "react-redux";
+import { signInSuccess } from "@/app/redux/userSlice";
 
 const defaultFormState = {
   name: "",
@@ -17,6 +19,7 @@ const SignUpForm = () => {
   const [formState, setFormState] = useState(defaultFormState);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { name, email, password, confirmPassword } = formState;
+  const dispatch = useDispatch(); // Redux dispatch
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -50,21 +53,23 @@ const SignUpForm = () => {
       if (userCredential) {
         console.log("User created successfully:", userCredential);
         // Reset form state only after a successful sign-up
+        const { uid, email } = userCredential.user;
+        dispatch(signInSuccess({ uid, email })); // Only dispatch serializable
         setFormState(defaultFormState);
       }
-    } catch (error) {
-      // Ensure the error is a FirebaseError
-      if (error instanceof FirebaseError) {
-        if (error.code === "auth/email-already-in-use") {
-          setErrorMessage("Email already in use");
+    } catch (error: FirebaseError | Error | unknown) {
+        // Ensure the error is a FirebaseError
+        if (error instanceof FirebaseError) {
+            if (error.code === "auth/email-already-in-use") {
+                setErrorMessage("Email already in use");
+            } else {
+                setErrorMessage(error.message);
+            }
+        } else if (error instanceof Error) {
+            setErrorMessage(error.message);
         } else {
-          setErrorMessage(error.message);
+            setErrorMessage("An unknown error occurred");
         }
-      } else if (error instanceof Error) {
-        setErrorMessage(error.message);
-      } else {
-        setErrorMessage("An unknown error occurred");
-      }
     }
   };
 

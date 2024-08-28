@@ -10,7 +10,7 @@
  } from "@/app/utils/firebase/firebase.utils";
  import { FirebaseError } from "firebase/app";
  import { useDispatch } from "react-redux";
- import { signInSuccess } from "../../redux/userSlice"; // Adjust the path
+ import { signInSuccess } from "../../redux/userSlice";
 
  const defaultFormState = {
    email: "",

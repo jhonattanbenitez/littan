@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
-  currentUser: any | null;
+  currentUser: null | { uid: string; email: string | null };
 }
 
 const initialState: UserState = {
@@ -24,5 +24,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { signInSuccess, signOutSuccess } = userSlice.actions; // Make sure signOutSuccess is exported
+export const { signInSuccess, signOutSuccess } = userSlice.actions; 
 export default userSlice.reducer;

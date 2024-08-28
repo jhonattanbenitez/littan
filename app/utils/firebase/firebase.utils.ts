@@ -7,7 +7,7 @@ import {
   UserCredential,
   User,
   signInWithEmailAndPassword,
-  onAuthStateChanged, // Import onAuthStateChanged
+  onAuthStateChanged, 
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
