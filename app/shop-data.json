@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "Brown Brim",
+    "imageUrl": "https://res.cloudinary.com/dnihs6uxl/image/upload/v1724855603/cianotipia/cianwoman_vkoevj.jpg",
+    "price": 25
+  },
+  {
+    "id": 2,
+    "name": "Blue Beanie",
+    "imageUrl": "https://res.cloudinary.com/dnihs6uxl/image/upload/v1724855603/cianotipia/cian_men_twbe4s.jpg",
+    "price": 18
+  },
+  {
+    "id": 3,
+    "name": "Brown Cowboy",
+    "imageUrl": "https://res.cloudinary.com/dnihs6uxl/image/upload/v1724855603/cianotipia/cianwoman_vkoevj.jpg",
+    "price": 35
+  },
+  {
+    "id": 4,
+    "name": "Grey Brim",
+    "imageUrl": "https://res.cloudinary.com/dnihs6uxl/image/upload/v1724855603/cianotipia/cian_men_twbe4s.jpg",
+    "price": 25
+  },
+  {
+    "id": 5,
+    "name": "Green Beanie",
+    "imageUrl": "https://res.cloudinary.com/dnihs6uxl/image/upload/v1724855603/cianotipia/cianwoman_vkoevj.jpg",
+    "price": 18
+  },
+  {
+    "id": 6,
+    "name": "Palm Tree Cap",
+    "imageUrl": "https://res.cloudinary.com/dnihs6uxl/image/upload/v1724855603/cianotipia/cian_men_twbe4s.jpg",
+    "price": 14
+  },
+  {
+    "id": 7,
+    "name": "Red Beanie",
+    "imageUrl": "https://res.cloudinary.com/dnihs6uxl/image/upload/v1724855603/cianotipia/cianwoman_vkoevj.jpg",
+    "price": 18
+  },
+  {
+    "id": 8,
+    "name": "Wolf Cap",
+    "imageUrl": "https://res.cloudinary.com/dnihs6uxl/image/upload/v1724855603/cianotipia/cian_men_twbe4s.jpg",
+    "price": 14
+  },
+  {
+    "id": 9,
+    "name": "Blue Snapback",
+    "imageUrl": "https://res.cloudinary.com/dnihs6uxl/image/upload/v1724855603/cianotipia/cianwoman_vkoevj.jpg",
+    "price": 16
+  }
+]

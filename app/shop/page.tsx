@@ -1,11 +1,17 @@
-import { Box, Typography } from "@mui/material";
+"use client"
 import React from "react";
+import { useSelector } from "react-redux";
+import { selectProducts } from "@/app/redux/shopSlice";
+import ProductCard from "../components/ProductCard/ProductCard";
 
 const Shop = () => {
+  const products = useSelector(selectProducts); // Get products from Redux store
+
   return (
-    <Box sx={{ mt: 10 }}>
-      <Typography>Shop</Typography>
-    </Box>
+    <div>
+      <h1>Shop</h1>
+      <ProductCard products={products} />
+    </div>
   );
 };
 
