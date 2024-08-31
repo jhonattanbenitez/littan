@@ -1,12 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import { Box, IconButton, Typography } from "@mui/material";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import CartDropdown from "./CartDropdown"; // Import the CartDropdown component
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store"; // Adjust the path as needed
 
 const CartIcon: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const itemCount = 10; // Replace with actual cart item count from Redux or state
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -27,7 +30,9 @@ const CartIcon: React.FC = () => {
         onClick={toggleDropdown}
         sx={{ position: "relative" }}
       >
-        <ShoppingBagIcon sx={{ width: 30, height: 30 }} />
+        <ShoppingBagOutlinedIcon
+          sx={{ width: 30, height: 30, color: "#0F316D" }}
+        />
         {itemCount > 0 && (
           <Typography
             variant="caption"
@@ -37,8 +42,8 @@ const CartIcon: React.FC = () => {
               right: "15px",
               fontSize: "10px",
               fontWeight: "bold",
-              color: "white",
-              backgroundColor: "#0F316D",
+              color: "#0F316D",
+              backgroundColor: "transparent",
               borderRadius: "50%",
               width: "16px",
               height: "16px",

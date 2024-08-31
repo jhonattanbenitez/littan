@@ -1,20 +1,23 @@
 import React from "react";
 import { Button } from "@mui/material";
+import Link from "next/link";
 
 interface CustomButtonProps {
   children: React.ReactNode;
   buttonType?: "default" | "inverted" | "google";
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
-  sx?: object; // Allow additional styling through the sx prop
+  sx?: object;
+  navigateTo?: string;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
   children,
-  buttonType = "default", // Default style
+  buttonType = "default",
   onClick,
   type = "button",
   sx = {},
+  navigateTo,
 }) => {
   const getButtonStyles = () => {
     switch (buttonType) {
@@ -30,10 +33,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         };
       case "google":
         return {
-          backgroundColor: "#4285F4", // Google's primary color
+          backgroundColor: "#4285F4",
           color: "white",
           "&:hover": {
-            backgroundColor: "#357AE8", // Darker blue on hover
+            backgroundColor: "#357AE8",
           },
         };
       case "default":
@@ -48,19 +51,27 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     }
   };
 
-  return (
+  const buttonContent = (
     <Button
       sx={{
         width: "100%",
         height: 50,
         ...getButtonStyles(),
         ...sx,
-      }} // Apply button styles and merge with additional sx
+      }}
       onClick={onClick}
       type={type}
     >
       {children}
     </Button>
+  );
+
+  return navigateTo ? (
+    <Link href={navigateTo} passHref>
+     {buttonContent}
+    </Link>
+  ) : (
+    buttonContent
   );
 };
 
