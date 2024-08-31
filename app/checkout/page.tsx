@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { Box, Typography, Divider, IconButton } from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
