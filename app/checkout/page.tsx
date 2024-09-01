@@ -1,5 +1,6 @@
-"use client"
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Box, Typography, IconButton } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/app/redux/store";
@@ -11,6 +12,10 @@ import {
 } from "@/app/redux/cartSlice";
 import { CldImage } from "next-cloudinary";
 import CustomButton from "../components/CustomButton/CustomButton";
+import {
+  auth,
+  onAuthStateChangeListener,
+} from "@/app/utils/firebase/firebase.utils";
 
 const Checkout = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -19,16 +24,27 @@ const Checkout = () => {
     0
   );
   const dispatch = useDispatch();
+  const router = useRouter();
 
-  const handleIncreaseQuantity = (itemId: number) => {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangeListener((user) => {
+      if (!user) {
+        router.push("/auth"); // Redirect to login page if not authenticated
+      }
+    });
+
+    return unsubscribe; // Clean up the subscription on unmount
+  }, [router]);
+
+  const handleIncreaseQuantity = (itemId: string) => {
     dispatch(increaseItemQuantity(itemId));
   };
 
-  const handleDecreaseQuantity = (itemId: number) => {
+  const handleDecreaseQuantity = (itemId: string) => {
     dispatch(decreaseItemQuantity(itemId));
   };
 
-  const handleRemoveItem = (itemId: number) => {
+  const handleRemoveItem = (itemId: string) => {
     dispatch(removeItemFromCart(itemId));
   };
 
@@ -57,7 +73,7 @@ const Checkout = () => {
           padding: "10px 0",
           display: {
             xs: "none", // Hide the header on mobile
-            sm: "none", 
+            sm: "none",
             md: "flex",
           },
           justifyContent: "space-between",
@@ -157,7 +173,7 @@ const Checkout = () => {
           <Typography
             sx={{ width: "23%", marginBottom: { xs: "10px", md: "0" } }}
           >
-            ${item.price.toFixed(2)}
+            ${Number(item.price).toFixed(2)}
           </Typography>
           <IconButton
             sx={{
@@ -190,7 +206,7 @@ const Checkout = () => {
         sx={{
           marginTop: "20px",
           width: {
-            xs: "100%", 
+            xs: "100%",
             sm: "auto",
           },
         }}

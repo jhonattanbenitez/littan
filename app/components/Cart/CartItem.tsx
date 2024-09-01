@@ -37,7 +37,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
           {item.name}
         </Typography>
         <Typography variant="body2">
-          {item.quantity} x ${item.price.toFixed(2)}
+          {String(item.quantity)} x ${Number(item.price).toFixed(2).toString()}
         </Typography>
       </Box>
     </Box>

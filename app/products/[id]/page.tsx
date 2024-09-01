@@ -31,8 +31,8 @@ const ProductDetail = ({ params }: { params: { id: string } }) => {
   const searchParams = useSearchParams();
 
   const selectedSizeFromQuery = searchParams.get("size") || "M";
-  const product = useSelector((state: RootState) =>
-    selectProductById(state, parseInt(params.id, 10))
+  const product = useSelector(
+    (state: RootState) => selectProductById(state, params.id) // Pass id directly as string
   );
 
   const [quantity, setQuantity] = useState(1);

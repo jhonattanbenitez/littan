@@ -15,7 +15,7 @@ import { addItemToCart } from "@/app/redux/cartSlice";
 import Link from "next/link";
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   imageUrl: string;
   images: string[];
@@ -30,11 +30,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ products }) => {
   const dispatch = useDispatch();
 
   // Use an object to manage selected sizes for each product
-  const [selectedSizes, setSelectedSizes] = useState<{ [key: number]: string }>(
-    {}
+  const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>(
+      {}
   );
 
-  const handleSizeChange = (productId: number, size: string) => {
+  const handleSizeChange = (productId: string, size: string) => {
     setSelectedSizes((prevSizes) => ({
       ...prevSizes,
       [productId]: size,

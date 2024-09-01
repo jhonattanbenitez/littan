@@ -17,6 +17,10 @@ import {
   getDoc,
   setDoc,
   DocumentReference,
+  collection,
+  writeBatch,
+  getDocs,
+  query
 } from "firebase/firestore";
 
 // Firebase configuration using environment variables
@@ -51,6 +55,33 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const db = getFirestore();
 
+export const addCollectionAndDocuments = async (collectionKey: string, objectsToAdd: any[]) => {
+  const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
+
+  objectsToAdd.forEach((obj) => {
+    const newDocRef = doc(collectionRef, obj.title.toLowerCase());
+    batch.set(newDocRef, obj);
+  });
+
+   await batch.commit();
+   console.log('Data added successfully');
+}
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, 'categories');
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  const categoryList: { [key: string]: any } = querySnapshot.docs.reduce((acc: { [key: string]: any }, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+  console.log(categoryList)
+  return categoryList;
+}
+getCategoriesAndDocuments();
 interface UserAuth extends User {
   displayName: string | null;
   email: string | null;
@@ -142,4 +173,11 @@ export const onAuthStateChangeListener = (
   callback: (user: User | null) => void
 ) => {
   onAuthStateChanged(auth, callback);
+};
+
+export const isAdmin = async (userId: string): Promise<boolean> => {
+  if (!userId) return false;
+  const roleDocRef = doc(db, "roles", userId);
+  const roleSnapshot = await getDoc(roleDocRef);
+  return roleSnapshot.exists() && roleSnapshot.data()?.role === "admin";
 };
