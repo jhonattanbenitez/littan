@@ -5,6 +5,7 @@ interface Product {
   id: number; // Keep id as number to match SHOP_DATA
   name: string;
   imageUrl: string;
+  images: string[];
   price: number;
   discountPrice?: number;
   description: string;

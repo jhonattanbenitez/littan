@@ -18,6 +18,7 @@ interface Product {
   id: number;
   name: string;
   imageUrl: string;
+  images: string[];
   price: number;
 }
 
@@ -47,6 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ products }) => {
         id: product.id,
         name: product.name,
         imageUrl: product.imageUrl,
+        images: [],
         price: product.price,
         quantity: 1,
         size: size,

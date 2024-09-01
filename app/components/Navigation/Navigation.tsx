@@ -10,6 +10,7 @@ import { signOutSuccess } from "@/app/redux/userSlice";
 import { RootState } from "../../redux/store";
 import { auth } from "@/app/utils/firebase/firebase.utils";
 import CartIcon from "../Cart/CartIcon"; // Import the CartIcon component
+import { CldImage } from "next-cloudinary";
 
 const Navigation: React.FC = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
@@ -45,7 +46,12 @@ const Navigation: React.FC = () => {
                 cursor: "pointer",
               }}
             >
-              Logo
+              <CldImage
+                src="https://res.cloudinary.com/dnihs6uxl/image/upload/v1725157658/cianotipia/littan-logo_pa1dhc.png"
+                width={90}
+                height={40}
+                alt="Littan logo"
+              />
             </Typography>
           </Link>
         </Box>

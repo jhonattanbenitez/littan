@@ -190,8 +190,8 @@ const Checkout = () => {
         sx={{
           marginTop: "20px",
           width: {
-            xs: "100%", // Full width on mobile
-            sm: "auto", // Default width on larger screens
+            xs: "100%", 
+            sm: "auto",
           },
         }}
       >
