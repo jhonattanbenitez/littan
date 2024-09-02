@@ -1,6 +1,6 @@
 const SHOP_DATA = [
   {
-    title: "Shirts",
+    title: "Camisas",
     items: [
       {
         id: "f8c4b7e9-8121-4b4a-9e0b-8d1b2fcae973",

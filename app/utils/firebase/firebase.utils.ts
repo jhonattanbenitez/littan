@@ -7,7 +7,7 @@ import {
   UserCredential,
   User,
   signInWithEmailAndPassword,
-  onAuthStateChanged, 
+  onAuthStateChanged,
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
@@ -20,7 +20,7 @@ import {
   collection,
   writeBatch,
   getDocs,
-  query
+  query,
 } from "firebase/firestore";
 
 // Firebase configuration using environment variables
@@ -55,7 +55,10 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const db = getFirestore();
 
-export const addCollectionAndDocuments = async (collectionKey: string, objectsToAdd: any[]) => {
+export const addCollectionAndDocuments = async (
+  collectionKey: string,
+  objectsToAdd: any[]
+) => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
 
@@ -64,24 +67,74 @@ export const addCollectionAndDocuments = async (collectionKey: string, objectsTo
     batch.set(newDocRef, obj);
   });
 
-   await batch.commit();
-   console.log('Data added successfully');
-}
+  await batch.commit();
+  console.log("Data added successfully");
+};
 
 export const getCategoriesAndDocuments = async () => {
-  const collectionRef = collection(db, 'categories');
+  const collectionRef = collection(db, "categories");
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-  const categoryList: { [key: string]: any } = querySnapshot.docs.reduce((acc: { [key: string]: any }, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-  console.log(categoryList)
+  const categoryList: { [key: string]: any } = querySnapshot.docs.reduce(
+    (acc: { [key: string]: any }, docSnapshot) => {
+      const { title, items } = docSnapshot.data();
+      acc[title.toLowerCase()] = items;
+      return acc;
+    },
+    {}
+  );
   return categoryList;
+};
+
+// Fetch products by category from Firestore
+interface Product {
+  id: string;
+  name: string;
+  imageUrl: string;
+  images: string[];
+  price: number;
+  discountPrice?: number;
+  description: string;
+  reviews: number;
 }
-getCategoriesAndDocuments();
+
+interface CategoryData {
+  title: string;
+  items: Product[];
+}
+
+export const fetchCategoryProducts = async (
+  category: string
+): Promise<Product[]> => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    console.error(`No documents found for category: ${category}`);
+    return [];
+  }
+
+  let categoryData: CategoryData | null = null;
+
+  querySnapshot.forEach((doc) => {
+    const data = doc.data() as CategoryData;
+    if (data.title.toLowerCase() === category.toLowerCase()) {
+      categoryData = data;
+    }
+  });
+
+  if (!categoryData) {
+    console.error(`Category "${category}" not found.`);
+    return [];
+  }
+
+  console.log("Category Data:", categoryData);
+  return (categoryData as CategoryData)?.items ?? [];
+};
+
 interface UserAuth extends User {
   displayName: string | null;
   email: string | null;
