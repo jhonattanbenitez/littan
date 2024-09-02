@@ -1,38 +1,41 @@
-"use client";
+"use client"
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Typography,
+  List,
+  ListItem,
+  IconButton,
+  Select,
+  MenuItem,
+  Button,
+  Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import {
+  collection,
+  updateDoc,
+  deleteDoc,
+  doc,
+  getDocs,
+} from "firebase/firestore";
 import {
   auth,
   onAuthStateChangeListener,
   isAdmin,
   db,
 } from "../utils/firebase/firebase.utils";
-import {
-  Box,
-  CircularProgress,
-  Container,
-  TextField,
-  Typography,
-  Button,
-  List,
-  ListItem,
-  IconButton,
-  Select,
-  MenuItem,
-} from "@mui/material";
-import {
-  collection,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-  getDocs,
-} from "firebase/firestore";
-import { SelectChangeEvent } from "@mui/material";
+import { useRouter } from "next/navigation";
+import EditProductModal from "../components/EditProductModal/EdictProductModal";
+import AddProductModal from "../components/AddProductModal/AddProductModal";
 
-import { v4 as uuidv4 } from "uuid";
-  
-// Define the Product and Category types
+
 interface Product {
   id: string;
   name: string;
@@ -53,17 +56,14 @@ const AdminPage = () => {
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [newProduct, setNewProduct] = useState<Product>({
-    id: "",
-    name: "",
-    price: "",
-    discountPrice: "",
-    description: "",
-    imageUrl: "",
-    images: [],
-    reviews: 0,
-  });
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<{
+    categoryTitle: string;
+    productId: string;
+  } | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -94,95 +94,99 @@ const AdminPage = () => {
     setCategories(categoriesList);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewProduct({ ...newProduct, [name]: value });
-  };
+ const handleUpdateProduct = async (updatedProduct: Product) => {
+   if (!selectedProduct) {
+     console.error("No product selected for updating.");
+     return;
+   }
 
+   const categoryTitle = categories.find((cat) =>
+     cat.items.some((item) => item.id === selectedProduct.id)
+   )?.title;
 
-  const handleCategoryChange = (e: SelectChangeEvent<string>) => {
-    setSelectedCategory(e.target.value);
-  };
+   if (!categoryTitle) {
+     console.error("No category found for the selected product.");
+     return;
+   }
 
-const handleAddProduct = async () => {
-  if (!selectedCategory) return;
+   const categoryRef = doc(db, "categories", categoryTitle);
+   const category = categories.find((cat) => cat.title === categoryTitle);
 
-  // Generate a unique ID for the new product
-  const newProductId = uuidv4();
+   if (category) {
+     const updatedItems = category.items.map((item) =>
+       item.id === updatedProduct.id ? updatedProduct : item
+     );
 
-  const categoryRef = doc(db, "categories", selectedCategory);
-  try {
-    await updateDoc(categoryRef, {
-      items: [
-        ...(categories.find((cat) => cat.title === selectedCategory)?.items ||
-          []),
-        {
-          ...newProduct,
-          id: newProductId, // Assign the unique ID here
-        },
-      ],
-    });
-    fetchCategories();
-    setNewProduct({
-      id: "",
-      name: "",
-      price: "",
-      discountPrice: "",
-      description: "",
-      imageUrl: "",
-      images: [],
-      reviews: 0,
-    });
-  } catch (error) {
-    console.error("Error adding product: ", error);
-  }
+     try {
+       await updateDoc(categoryRef, { items: updatedItems });
+       fetchCategories();
+     } catch (error) {
+       console.error("Error updating product: ", error);
+     }
+   }
+ };
+
+ const handleOpenDeleteDialog = (categoryTitle: string, productId: string) => {
+   setProductToDelete({ categoryTitle, productId });
+   setIsDeleteDialogOpen(true);
+ };
+
+ const handleCloseDeleteDialog = () => {
+   setIsDeleteDialogOpen(false);
+   setProductToDelete(null);
+ };
+
+ const handleConfirmDelete = async () => {
+   if (productToDelete) {
+     try {
+       const { categoryTitle, productId } = productToDelete;
+       const categoryRef = doc(db, "categories", categoryTitle);
+       const category = categories.find((cat) => cat.title === categoryTitle);
+
+       if (category) {
+         const updatedItems = category.items.filter(
+           (item) => item.id !== productId
+         );
+         await updateDoc(categoryRef, { items: updatedItems });
+         fetchCategories();
+       }
+       handleCloseDeleteDialog();
+     } catch (error) {
+       console.error("Error deleting product: ", error);
+     }
+   }
+ };
+
+  
+const handleDeleteProduct = async (categoryTitle: string, productId: string) => {
+    
+    try {
+        const categoryRef = doc(db, "categories", categoryTitle);
+        const category = categories.find((cat) => cat.title === categoryTitle);
+
+        if (category) {
+            const updatedItems = category.items.filter((item) => item.id !== productId);
+            await updateDoc(categoryRef, { items: updatedItems });
+            fetchCategories();
+        }
+    } catch (error) {
+        console.error("Error deleting product: ", error);
+    }
 };
 
-  const handleUpdateProduct = async (
-    categoryTitle: string,
-    productId: string
-  ) => {
-    const categoryRef = doc(db, "categories", categoryTitle);
-    const category = categories.find((cat) => cat.title === categoryTitle);
-
-    if (category) {
-      const updatedItems = category.items.map((item) =>
-        item.id === productId ? newProduct : item
-      );
-
-      try {
-        await updateDoc(categoryRef, { items: updatedItems });
-        fetchCategories();
-      } catch (error) {
-        console.error("Error updating product: ", error);
-      }
-    }
+  const handleOpenModal = (product: Product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
   };
 
-  const handleDeleteProduct = async (
-    categoryTitle: string,
-    productId: string
-  ) => {
-    const categoryRef = doc(db, "categories", categoryTitle);
-    const category = categories.find((cat) => cat.title === categoryTitle);
-
-    if (category) {
-      const updatedItems = category.items.filter(
-        (item) => item.id !== productId
-      );
-
-      try {
-        await updateDoc(categoryRef, { items: updatedItems });
-        fetchCategories();
-      } catch (error) {
-        console.error("Error deleting product: ", error);
-      }
-    }
+  const handleCloseModal = () => {
+    setSelectedProduct(null);
+    setIsModalOpen(false);
   };
 
   if (loading) {
     return (
-      <Container>
+      <Container sx={{mt: 10}}>
         <CircularProgress />
         <Typography variant="h4" gutterBottom>
           Admin Page
@@ -195,102 +199,105 @@ const handleAddProduct = async () => {
     return null;
   }
 
-  return (
-    <Container>
-      <Typography variant="h4">Admin Page</Typography>
-      <Box>
-        <Select
-          value={selectedCategory}
-          onChange={handleCategoryChange}
-          displayEmpty
-          fullWidth
+;
+
+const handleOpenAddModal = () => {
+  setIsAddModalOpen(true);
+};
+
+const handleCloseAddModal = () => {
+  setIsAddModalOpen(false);
+};
+
+return (
+  <Container sx={{ mt: 10 }}>
+    <Typography variant="h4">Admin Page</Typography>
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={handleOpenAddModal}
+      sx={{ mb: 2 }}
+    >
+      Add New Product
+    </Button>
+    {categories.map((category) => (
+      <div key={category.title}>
+        <Typography
+          variant="h6"
+          sx={{ textTransform: "capitalize", fontWeight: "bold" }}
         >
-          <MenuItem value="" disabled>
-            Select Category
-          </MenuItem>
-          {categories.map((category) => (
-            <MenuItem key={category.title} value={category.title}>
-              {category.title}
-            </MenuItem>
-          ))}
-        </Select>
-        <TextField
-          label="Name"
-          name="name"
-          value={newProduct.name}
-          onChange={handleInputChange}
-          fullWidth
-        />
-        <TextField
-          label="Price"
-          name="price"
-          value={newProduct.price}
-          onChange={handleInputChange}
-          fullWidth
-        />
-        <TextField
-          label="Discount Price"
-          name="discountPrice"
-          value={newProduct.discountPrice}
-          onChange={handleInputChange}
-          fullWidth
-        />
-        <TextField
-          label="Description"
-          name="description"
-          value={newProduct.description}
-          onChange={handleInputChange}
-          fullWidth
-        />
-        <TextField
-          label="Image URL"
-          name="imageUrl"
-          value={newProduct.imageUrl}
-          onChange={handleInputChange}
-          fullWidth
-        />
-        <TextField
-          label="Images (comma-separated)"
-          name="images"
-          value={newProduct.images.join(", ")}
-          onChange={(e) =>
-            setNewProduct({
-              ...newProduct,
-              images: e.target.value.split(", "),
-            })
-          }
-          fullWidth
-        />
-        <Button onClick={handleAddProduct}>Add Product</Button>
-      </Box>
-      {categories.map((category) => (
-        <div key={category.title}>
-          <Typography variant="h6">{category.title}</Typography>
-          <List>
-            {category.items.map((product) => (
-              <ListItem key={product.id}>
-                <Typography>{product.name}</Typography>
-                <IconButton
-                  onClick={() =>
-                    handleUpdateProduct(category.title, product.id)
-                  }
+          {category.title}
+        </Typography>
+        <List>
+          {category.items.map((product) => (
+            <ListItem
+              key={product.id}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography>{product.name}</Typography>
+              <Box sx={{ display: "flex", gap: 1 }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleOpenModal(product)}
                 >
-                  Update
-                </IconButton>
-                <IconButton
+                  Edit
+                </Button>
+                <Button
                   onClick={() =>
-                    handleDeleteProduct(category.title, product.id)
+                    handleOpenDeleteDialog(category.title, product.id)
                   }
+                  variant="outlined"
+                  color="error"
                 >
                   Delete
-                </IconButton>
-              </ListItem>
-            ))}
-          </List>
-        </div>
-      ))}
-    </Container>
-  );
+                </Button>
+              </Box>
+            </ListItem>
+          ))}
+          <Divider />
+        </List>
+      </div>
+    ))}
+    <EditProductModal
+      open={isModalOpen}
+      onClose={handleCloseModal}
+      product={selectedProduct}
+      onSave={handleUpdateProduct}
+    />
+    <AddProductModal
+      open={isAddModalOpen}
+      onClose={handleCloseAddModal}
+      categories={categories}
+      fetchCategories={fetchCategories}
+    />
+    <Dialog
+  open={isDeleteDialogOpen}
+  onClose={handleCloseDeleteDialog}
+  aria-labelledby="alert-dialog-title"
+  aria-describedby="alert-dialog-description"
+>
+  <DialogTitle id="alert-dialog-title">{"Delete Product?"}</DialogTitle>
+  <DialogContent>
+    <DialogContentText id="alert-dialog-description">
+      Are you sure you want to delete this product? This action cannot be undone.
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleCloseDeleteDialog} color="primary">
+      Cancel
+    </Button>
+    <Button onClick={handleConfirmDelete} color="error" autoFocus>
+      Delete
+    </Button>
+  </DialogActions>
+</Dialog>
+  </Container>
+);
 };
 
 export default AdminPage;
