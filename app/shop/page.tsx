@@ -11,7 +11,7 @@ const Shop = () => {
   const categories = useSelector(selectCategories);
 
   // Define the desired order of categories
-  const categoryOrder = ["shirts", "oversize", "accessories", "women", "men"];
+  const categoryOrder = ["shirts", "oversize", "accessories", "women", "men", "camisas"];
 
   // Sort categories based on the defined order
   const sortedCategories = [...categories].sort((a, b) => {
