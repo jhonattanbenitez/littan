@@ -6,21 +6,24 @@ export default function Home() {
     {
       id: "1",
       title: "Shirts",
-      backgroundImage: "url('https://placehold.co/600x400')",
+      backgroundImage:
+        "url('https://res.cloudinary.com/dnihs6uxl/image/upload/v1725502175/shirts/shirts.jpg')",
       flexBasis: { xs: "100%", sm: "30%" },
       linkUrl: "/shirts",
     },
     {
       id: "2",
       title: "Oversize",
-      backgroundImage: "url('https://placehold.co/600x400')",
+      backgroundImage:
+        "url('https://res.cloudinary.com/dnihs6uxl/image/upload/v1725502491/overize/oversize.jpg')",
       flexBasis: { xs: "100%", sm: "30%" },
       linkUrl: "/oversize",
     },
     {
       id: "3",
       title: "Accessories",
-      backgroundImage: "url('https://placehold.co/600x400')",
+      backgroundImage:
+        "url('https://res.cloudinary.com/dnihs6uxl/image/upload/v1725502342/accessories/accessories.jpg')",
       flexBasis: { xs: "100%", sm: "30%" },
       linkUrl: "/accessories",
     },
@@ -30,14 +33,16 @@ export default function Home() {
     {
       id: "4",
       title: "Women",
-      backgroundImage: "url('https://placehold.co/600x400')",
+      backgroundImage:
+        "url('https://res.cloudinary.com/dnihs6uxl/image/upload/v1724855603/cianotipia/cianwoman_vkoevj.jpg')",
       flexBasis: { xs: "100%", sm: "45%" },
       linkUrl: "/women",
     },
     {
       id: "5",
       title: "Men",
-      backgroundImage: "url('https://placehold.co/600x400')",
+      backgroundImage:
+        "url('https://res.cloudinary.com/dnihs6uxl/image/upload/v1724855574/cian_men_asgrqk.jpg')",
       flexBasis: { xs: "100%", sm: "45%" },
       linkUrl: "/men",
     },

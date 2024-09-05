@@ -1,7 +1,6 @@
-import { Box } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import categoryStyles from "../../homeStyles";
-import Link from "next/link";
-import { link } from "fs";
+
 
 interface CategoryProps {
   title: string;
@@ -17,7 +16,8 @@ const CategoryItem: React.FC<CategoryProps> = ({
   linkUrl
 }) => {
   return (
-    <Box
+    <Link
+      href={linkUrl}
       sx={{
         ...categoryStyles.categoryContainer,
         flexBasis: flexBasis,
@@ -39,12 +39,15 @@ const CategoryItem: React.FC<CategoryProps> = ({
         className="categoryBodyContainer"
         sx={categoryStyles.categoryBodyContainer}
       >
-        <h2>{title}</h2>
-        <Link href={linkUrl}>
-        <p>Shop Now</p>
-        </Link>
+        <Typography
+          component={"h2"}
+          sx={{ fontSize: "18px", fontColor: "#0F316D" }}
+        >
+          {title}
+        </Typography>
+        <Typography sx={{fontSize: "16px", fontColor: "#0F316D"}}>Shop Now</Typography>
       </Box>
-    </Box>
+    </Link>
   );
 };
 
